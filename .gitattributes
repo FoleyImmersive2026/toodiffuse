@@ -1,0 +1,3 @@
+media/*.wav -text
+media/*.m4a -text
+media/*.mp4 -text
