@@ -3,76 +3,91 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Too Diffuse to Localize — demo page</title>
-<style>
-:root{--fg:#1d1d1f;--muted:#5c5c66;--bg:#ffffff;--card:#f6f6f8;--line:#e2e2e8;--accent:#2b5bd7}
-@media (prefers-color-scheme:dark){:root{--fg:#eaeaf0;--muted:#a3a3b0;--bg:#121216;--card:#1c1c22;--line:#2c2c34;--accent:#7ea2ff}}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:32px 16px 64px}
-h1{font-size:30px;line-height:1.2;margin:0 0 8px} h2{font-size:22px;margin:40px 0 12px;border-bottom:1px solid var(--line);padding-bottom:6px}
-.authors{font-size:17px;margin:6px 0} .affil{color:var(--muted);font-size:14px;margin:2px 0}
-.links a{display:inline-block;margin:10px 8px 0 0;padding:7px 14px;border:1px solid var(--accent);border-radius:20px;color:var(--accent);text-decoration:none;font-weight:600}
-.abstract{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px}
-.fig{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start} .fig figure{margin:0;flex:1 1 320px} .fig img{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff}
-figcaption{font-size:14px;color:var(--muted);margin-top:6px}
-.ex{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:18px 0}
-.ex h3{margin:0 0 10px;font-size:17px} .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.cell{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px} .cell .name{font-weight:600;font-size:14px;margin-bottom:6px}
-.cell img{width:100%;border-radius:6px} .cell audio{width:100%;margin-top:6px} .cell .cc{font-size:13px;color:var(--muted)}
-.cell a{font-size:12px;color:var(--accent)} video{width:100%;max-width:640px;border-radius:10px;border:1px solid var(--line)}
-.note{font-size:14px;color:var(--muted)} code,pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px} pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto}
-ul{padding-left:20px} li{margin:4px 0}
-</style>
+<title>Too Diffuse to Localize</title>
+<meta name="description" content="Demo page with 360-degree listening examples for the ICASSP 2027 submission 'Too Diffuse to Localize: Diagnosing and Correcting the MSE Bias in Video-Guided Ambisonic Spatialization'.">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="wrap">
-<h1>Too Diffuse to Localize: Diagnosing and Correcting the MSE Bias in Video-Guided Ambisonic Spatialization</h1>
-<p class="authors">Liming Liang, Lingfeng Yang, Luo Chen, <span id="extra-authors">Yuguo Yin, Zihan Xiong</span>, Yuexian Zou</p>
-<p class="affil">School of Electronic and Computer Engineering, Peking University, Shenzhen · Guangdong Provincial Key Laboratory of Ultra High Definition Immersive Media Technology, Shenzhen Graduate School, Peking University · South China University of Technology</p>
-<p class="affil">Submitted to ICASSP 2027</p>
-<div class="links"><a href="paper.pdf" id="link-paper">Paper (PDF)</a><a href="#" id="link-arxiv">arXiv</a><a href="#examples">Audio examples</a></div>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="venue">ICASSP 2027 submission</p>
+    <h1>Too Diffuse to Localize: Diagnosing and Correcting the MSE Bias in Video-Guided Ambisonic Spatialization</h1>
+    <p class="authors">Liming Liang<sup>1,2</sup>, Lingfeng Yang<sup>3</sup>, Luo Chen<sup>1</sup>, Yuguo Yin<sup>1</sup>, Zihan Xiong<sup>1</sup>, Yuexian Zou<sup>1,2</sup></p>
+    <p class="affil"><sup>1</sup>School of Electronic and Computer Engineering, Peking University, Shenzhen &nbsp;&middot;&nbsp; <sup>2</sup>Guangdong Provincial Key Laboratory of Ultra High Definition Immersive Media Technology, Shenzhen Graduate School, Peking University &nbsp;&middot;&nbsp; <sup>3</sup>South China University of Technology, Guangzhou</p>
+    <div class="button-group">
+      <a class="button" href="paper.pdf">Paper (PDF)</a>
+      <a class="button" href="#examples">360&deg; listening examples</a>
+      <a class="button" href="#bibtex">BibTeX</a>
+      <a class="button muted" href="#">Code (coming soon)</a>
+    </div>
+  </div>
+</header>
 
-<h2>Abstract</h2>
-<div class="abstract">Video-guided first-order ambisonic (FOA) spatialization predicts the directional channels of a sound field from a mono track and its 360-degree video. We show that spatializers trained with the standard complex-spectrogram mean-squared error (MSE) are biased toward <em>diffuse</em> fields: the MSE-optimal prediction is a conditional mean whose directional energy is reduced by the conditional variance of the source direction given the video, and whose shape is a posterior average over plausible directions. On the spherical energy maps used by 360-degree benchmarks this lowers correlation (CC) and AUC even when the peak direction is right. A validation-selected gain on the directional channels recovers part of the gap, but we remove the bias at its source with a differentiable energy-map loss written in closed form from the STFT spatial covariance. On 6,553 YT-Ambigen test clips this raises CC from 0.738 to 0.781 and AUC from 0.899 to 0.920, beats the calibrated MSE model, and flattens the gain curve, while leaving the mono channel untouched. The benchmark's camera direction, we further show, coincides with the target map's peak: a zero-parameter plane wave placed there already scores 0.69–0.75, matching end-to-end generation. We therefore report all models with and without it.</div>
+<main>
+<section>
+  <h2>Abstract</h2><hr>
+  <p>Video-guided first-order ambisonic (FOA) spatialization predicts the directional channels of a sound field from a mono track and its 360-degree video. We show that spatializers trained with the standard complex-spectrogram mean-squared error (MSE) are biased toward <em>diffuse</em> fields: the MSE-optimal prediction is a conditional mean whose directional energy is reduced by the conditional variance of the source direction given the video, and whose shape is a posterior average over plausible directions. On the spherical energy maps used by 360-degree benchmarks this lowers correlation (CC) and AUC even when the peak direction is right. A validation-selected gain on the directional channels recovers part of the gap, but we remove the bias at its source with a differentiable energy-map loss written in closed form from the STFT spatial covariance. On 6,553 YT-Ambigen test clips this raises CC from 0.738 to 0.781 and AUC from 0.899 to 0.920, beats the calibrated MSE model, and flattens the gain curve, while leaving the mono channel untouched. The benchmark's camera direction, we further show, coincides with the target map's peak: a zero-parameter plane wave placed there already scores 0.69&ndash;0.75, matching end-to-end generation. We therefore report all models with and without it.</p>
+</section>
 
-<h2>Key findings</h2>
-<ul>
-<li><b>Diagnosis.</b> MSE regression of the zero-mean directional channels returns a conditional mean: its energy is shrunk by the conditional variance of the source direction (shrinkage factor α = 0.60 for our MSE model) and its shape is a posterior average — a smeared field. The validation-selected gain (2.0) exceeds 1/α = 1.68 and is far above the least-squares gain (0.73): calibration compensates for smearing, not only for lost energy.</li>
-<li><b>Metric-aligned loss.</b> The benchmark energy map is a quadratic form of the 4×4 STFT spatial covariance, so it can be differentiated in closed form. Adding its correlation to the objective raises test CC from 0.738 to 0.781 (0.775 with λ = 3), above the <em>calibrated</em> MSE model, and makes the gain curve flat.</li>
-<li><b>Benchmark protocol.</b> The camera direction shipped with YT-Ambigen is the arg-max of the ground-truth energy map (median 3.2° away): a plane wave placed there scores CC 0.689, and the released mono-to-FOA encoder flips the Y axis (0.291 with that convention). Without the camera direction, the map loss lifts video-driven localization from 0.364 to 0.500.</li>
-</ul>
-<div class="fig">
-<figure><img src="figs/fig_gain_curve.png" alt="gain curve"><figcaption>Validation objective vs. a shared gain on the predicted directional channels: the MSE model peaks far from g = 1, the map-loss model near g = 1.</figcaption></figure>
-<figure><img src="figs/fig_maps.png" alt="energy maps"><figcaption>Whole-clip energy maps: ground truth, MSE, MSE with the selected gain, MSE + map loss. The gain sharpens the MSE map but cannot move its mass.</figcaption></figure>
-</div>
+<section>
+  <h2>Key findings</h2><hr>
+  <ul>
+    <li><b>Diagnosis.</b> MSE regression of the zero-mean directional channels returns a conditional mean: its energy is shrunk by the conditional variance of the source direction (shrinkage factor &alpha; = 0.60 for our MSE model) and its shape is a posterior average, i.e. a smeared field. The validation-selected gain (2.0) exceeds 1/&alpha; = 1.68 and is far above the least-squares gain (0.73): calibration compensates for smearing, not only for lost energy.</li>
+    <li><b>Metric-aligned loss.</b> The benchmark energy map is a quadratic form of the 4&times;4 STFT spatial covariance, so it can be differentiated in closed form. Adding its correlation to the objective raises test CC from 0.738 to 0.781 (0.775 with &lambda; = 3), above the <em>calibrated</em> MSE model, and makes the gain curve flat.</li>
+    <li><b>Benchmark protocol.</b> The camera direction shipped with YT-Ambigen is the arg-max of the ground-truth energy map (median 3.2&deg; away): a plane wave placed there scores CC 0.689, and the released mono-to-FOA encoder flips the Y axis (0.291 with that convention). Without the camera direction, the map loss lifts video-driven localization from 0.364 to 0.500.</li>
+  </ul>
+</section>
 
-<h2 id="examples">Audio examples (test clips, camera direction given)</h2>
-<p class="note">Each example shows the 360° video (equirectangular, muted) and, for the ground truth and three spatializers, the whole-clip energy map (2° grid, official decode; azimuth −180…180°, elevation −90…90°) with a <b>stereo render</b> for quick listening (virtual cardioid pair: L = W + Y, R = W − Y) and the full 4-channel FOA file (ACN/SN3D, 16 kHz) for download. The mono input W is the ground-truth mono channel in all rows; only the directional channels differ. CC is the full-clip correlation with the ground-truth map. The first five clips are those where the map loss gains most over MSE; the last three are typical clips near the median.</p>
-<div id="examples-root"></div>
+<section class="wide">
+  <h2>Figures</h2><hr>
+  <div class="figrow">
+    <figure><img src="figs/fig_gain_curve.png" alt="gain curve"><figcaption>Validation objective vs. a shared gain on the predicted directional channels: the MSE model peaks far from g = 1, the map-loss model near g = 1.</figcaption></figure>
+    <figure><img src="figs/fig_maps.png" alt="energy maps"><figcaption>Whole-clip energy maps: ground truth, MSE, MSE with the selected gain, MSE + map loss. The gain sharpens the MSE map but cannot move its mass.</figcaption></figure>
+  </div>
+</section>
 
-<h2>Citation</h2>
+<section class="wide" id="examples">
+  <h2>360&deg; listening examples</h2><hr>
+  <p class="guide">&#127911; <b>Use headphones.</b> Every panel is a 360&deg; player: press play, then <b>drag inside the picture to look around</b>. The 4-channel FOA output of each model is rendered binaurally (Omnitone) and counter-rotated with your view, so a well-localized source stays attached to the object on screen while the camera turns; a <em>diffuse</em> field sounds equally wide wherever you look. Each player starts facing the benchmark's camera direction. All four rows of a clip share the same video and the same mono channel W; only the predicted directional channels (Y, Z, X) differ. Below each player: the whole-clip energy map (azimuth &minus;180&hellip;180&deg; left to right, elevation &minus;90&hellip;90&deg;), its CC against the ground-truth map, and the 4-channel FOA file (ACN/SN3D, 16 kHz). The first five clips are those where the map loss gains most over MSE; the last three are typical clips near the median.</p>
+  <div id="examples-root"></div>
+</section>
+
+<section id="bibtex">
+  <h2>Citation</h2><hr>
 <pre>@inproceedings{liang2027diffuse,
   title     = {Too Diffuse to Localize: Diagnosing and Correcting the {MSE} Bias in Video-Guided Ambisonic Spatialization},
   author    = {Liming Liang and Lingfeng Yang and Luo Chen and Yuguo Yin and Zihan Xiong and Yuexian Zou},
   booktitle = {Proc. IEEE Int. Conf. Acoustics, Speech and Signal Processing (ICASSP)},
   year      = {2027}, note = {submitted}
 }</pre>
-<p class="note">Acknowledgement: this work is supported by Guangdong Provincial Key Laboratory of Ultra High Definition Immersive Media Technology (Grant No. 2024B1212010006) and financially supported by Shenzhen Science and Technology Program (Grant No. SYSPG20241211173440004). Data: YT-Ambigen (Kim et al., ICLR 2025); only short test excerpts are shown here for research purposes.</p>
-</div>
+  <p class="ack">Acknowledgement: this work is supported by Guangdong Provincial Key Laboratory of Ultra High Definition Immersive Media Technology (Grant No. 2024B1212010006) and financially supported by Shenzhen Science and Technology Program (Grant No. SYSPG20241211173440004). Data: YT-Ambigen (Kim et al., ICLR 2025); only short test excerpts are shown here for research purposes. Binaural rendering uses <a href="https://github.com/GoogleChrome/omnitone">Omnitone</a> (Apache-2.0).</p>
+</section>
+</main>
+<footer>Too Diffuse to Localize &middot; ICASSP 2027 submission &middot; Peking University Shenzhen</footer>
+
+<script src="js/omnitone.min.js"></script>
+<script src="js/foaplayer.js"></script>
 <script>
-const VARIANTS = [["gt","Ground truth"],["mse","MSE"],["mse_gain","MSE + selected gain (2.0, 1.7, 2.0)"],["map3","MSE + map loss (λ = 3)"]];
+const VARIANTS = [["gt", "Ground truth"], ["mse", "MSE"], ["mse_gain", "MSE + selected gain"], ["map3", "MSE + map loss (λ = 3)"]];
 fetch("examples.json").then(r => r.json()).then(list => {
   const root = document.getElementById("examples-root");
   list.forEach((e, i) => {
     const d = e.dir, az = Math.atan2(-d[1], d[0]) * 180 / Math.PI, el = Math.asin(Math.max(-1, Math.min(1, d[2]))) * 180 / Math.PI;
-    const ex = document.createElement("div"); ex.className = "ex";
-    ex.innerHTML = `<h3>Example ${i + 1}: clip <code>${e.id}</code> — camera direction azimuth ${az.toFixed(0)}°, elevation ${el.toFixed(0)}°</h3>
-      <video src="media/${e.id}.mp4" poster="media/${e.id}.jpg" controls muted loop playsinline></video>
-      <p class="note">Mono input W (ground truth): <audio controls preload="none" src="media/${e.id}_mono.m4a"></audio></p>
-      <div class="row">${VARIANTS.map(([v, name]) => `<div class="cell"><div class="name">${name}</div><img src="media/${e.id}_${v}_map.png" alt="${name} map">
-        <audio controls preload="none" src="media/${e.id}_${v}.m4a"></audio>
-        <div class="cc">CC = ${e.cc[v] !== undefined ? e.cc[v].toFixed(3) : "–"} · <a href="media/${e.id}_${v}_foa.wav" download>FOA (4-ch WAV)</a></div></div>`).join("")}</div>`;
-    root.appendChild(ex);
+    const card = document.createElement("div"); card.className = "case";
+    card.innerHTML = `<h3>Example ${i + 1} &middot; clip <code>${e.id}</code></h3>
+      <p class="sub">Camera direction given to the models: azimuth ${az.toFixed(0)}&deg;, elevation ${el.toFixed(0)}&deg; (players start facing it; use "reset view" to come back). CC = full-clip correlation of the model's energy map with the ground truth.</p>
+      <div class="mono">Mono input W, shared by all four: <audio controls preload="none" src="media/${e.id}_mono.m4a"></audio></div>
+      <div class="player-row"></div>`;
+    const row = card.querySelector(".player-row");
+    VARIANTS.forEach(([v, name]) => {
+      const p = document.createElement("div"); p.className = "panel";
+      p.innerHTML = `<div class="fp"></div><div class="label">${name}</div>
+        <div class="meta">CC = ${e.cc[v] !== undefined ? e.cc[v].toFixed(3) : "–"} &middot; <a href="media/${e.id}_${v}_foa.wav" download>FOA WAV</a> &middot; <a href="media/${e.id}_${v}.m4a">stereo</a></div>
+        <img class="map" src="media/${e.id}_${v}_map.png" alt="${name} energy map" loading="lazy">`;
+      row.appendChild(p);
+      new FOAPlayer(p.querySelector(".fp"), { video: `media/${e.id}.mp4`, foa: `media/${e.id}_${v}_foa.wav`, poster: `media/${e.id}.jpg`, yaw: az, pitch: el });
+    });
+    root.appendChild(card);
   });
 });
 </script>
